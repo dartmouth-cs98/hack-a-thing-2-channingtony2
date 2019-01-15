@@ -28,52 +28,52 @@ const CARD_WIDTH = CARD_HEIGHT - 50;
 export default class screens extends Component {
 
 // define our marker state
-state = {
-    markers: [
-      {
-        coordinate: {
-          latitude: 45.524548,
-          longitude: -122.6749817,
+  state = {
+      markers: [
+        {
+          coordinate: {
+            latitude: 45.524548,
+            longitude: -122.6749817,
+          },
+          title: "Best Place",
+          description: "This is the best place in Portland",
+          image: Images[0],
         },
-        title: "Best Place",
-        description: "This is the best place in Portland",
-        image: Images[0],
-      },
-      {
-        coordinate: {
-          latitude: 45.524698,
-          longitude: -122.6655507,
+        {
+          coordinate: {
+            latitude: 45.524698,
+            longitude: -122.6655507,
+          },
+          title: "Second Best Place",
+          description: "This is the second best place in Portland",
+          image: Images[1],
         },
-        title: "Second Best Place",
-        description: "This is the second best place in Portland",
-        image: Images[1],
-      },
-      {
-        coordinate: {
-          latitude: 45.5230786,
-          longitude: -122.6701034,
+        {
+          coordinate: {
+            latitude: 45.5230786,
+            longitude: -122.6701034,
+          },
+          title: "Third Best Place",
+          description: "This is the third best place in Portland",
+          image: Images[2],
         },
-        title: "Third Best Place",
-        description: "This is the third best place in Portland",
-        image: Images[2],
-      },
-      {
-        coordinate: {
-          latitude: 45.521016,
-          longitude: -122.6561917,
+        {
+          coordinate: {
+            latitude: 45.521016,
+            longitude: -122.6561917,
+          },
+          title: "Fourth Best Place",
+          description: "This is the fourth best place in Portland",
+          image: Images[3],
         },
-        title: "Fourth Best Place",
-        description: "This is the fourth best place in Portland",
-        image: Images[3],
+      ],
+      region: {
+        latitude: 45.52220671242907,
+        longitude: -122.6653281029795,
+        latitudeDelta: 0.04864195044303443,
+        longitudeDelta: 0.040142817690068,
       },
-    ],
-    region: {
-      latitude: 45.52220671242907,
-      longitude: -122.6653281029795,
-      latitudeDelta: 0.04864195044303443,
-      longitudeDelta: 0.040142817690068,
-    },
-  };
+    };
 
   // runs when app loads
   componentWillMount() {
@@ -81,7 +81,27 @@ state = {
     this.animation = new Animated.Value(0);
   }
 
-render() {
+  
+
+  render() {
+    const interpolations = this.state.markers.map((marker, index) => {
+      const inputRange = [
+        (index - 1) * CARD_WIDTH,
+        index * CARD_WIDTH,
+        ((index + 1) * CARD_WIDTH),
+      ];
+      const scale = this.animation.interpolate({
+        inputRange,
+        outputRange: [1, 2.5, 1],
+        extrapolate: "clamp",
+      });
+      const opacity = this.animation.interpolate({
+        inputRange,
+        outputRange: [0.35, 1, 0.35],
+        extrapolate: "clamp",
+      });
+      return { scale, opacity };
+    });
     return (
       <View style={styles.container}>
         <MapView
@@ -135,6 +155,7 @@ render() {
               </View>
             </View>
           ))}
+          
         </Animated.ScrollView>
       </View>
     );
