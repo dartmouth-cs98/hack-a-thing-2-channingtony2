@@ -83,14 +83,26 @@ state = {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container}>        
         <MapView
-  ref={map => this.map = map}
-  initialRegion={this.state.region}
-  style={styles.container}
->
+          ref={map => this.map = map}
+          initialRegion={this.state.region}
+          style={styles.container}
+        >
+          
+          {this.state.markers.map((marker, index) => {
+            // looping through each marker in our state and drawing it on the map
+            return (
+              <MapView.Marker key={index} coordinate={marker.coordinate}>
+                <Animated.View style={[styles.markerWrap]}>
+                  <Animated.View style={[styles.ring]} />
+                  <View style={styles.marker} />
+                </Animated.View>
+              </MapView.Marker>
+            );
+          })}
 
-</MapView>
+        </MapView>
       </View>
     );
   }
