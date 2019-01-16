@@ -32,8 +32,8 @@ const Images = [
 
 // defining constatns for height/width based on the window
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = height / 2.5;
-const CARD_WIDTH = width - 40;
+const CARD_HEIGHT = height / 3;
+const CARD_WIDTH = width - 60;
 
 export default class screens extends Component {
 
@@ -286,7 +286,7 @@ export default class screens extends Component {
               <View style={this.state.pressStatus ? styles.textContentExpaned : styles.textContent}>
                 <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
                 <Text numberOfLines={
-                	this.state.pressStatus ? 16 : 2
+                	this.state.pressStatus ? 18 : 2
                 } style={styles.cardDescription}>
                   {marker.description}
                 </Text>
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT*2.2,
+    height: CARD_HEIGHT*2.5,
     width: CARD_WIDTH,
     // overflow: "hidden",
   },
