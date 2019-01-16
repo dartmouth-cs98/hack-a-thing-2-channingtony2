@@ -8,13 +8,14 @@ import {
   Animated,
   Image,
   Dimensions,
+  TouchableHighlight
 } from "react-native";
 
 import MapView from "react-native-maps";
 
 // images to use
 const Images = [
-  { uri: "https://i.imgur.com/sNam9iJ.jpg" },
+  { uri: "http://www.tri-kap.com/sites/all/themes/nexus/images/slide-image-3.jpg" },
   { uri: "https://i.imgur.com/N7rlQYt.jpg" },
   { uri: "https://i.imgur.com/UDrH0wm.jpg" },
   { uri: "https://i.imgur.com/Ka8kNST.jpg" }
@@ -22,21 +23,22 @@ const Images = [
 
 // defining constatns for height/width based on the window
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = CARD_HEIGHT - 50;
+const CARD_HEIGHT = height / 2.5;
+const CARD_WIDTH = CARD_HEIGHT +60;
 
 export default class screens extends Component {
 
 // define our marker state
   state = {
+  	  pressStatus: false,
       markers: [
         {
           coordinate: {
-            latitude: 43.705131,
-            longitude: -72.288719,
+            latitude: 43.706229,
+            longitude: -72.289982,
           },
           title: "Trikap",
-          description: "The best place in Hanover NH!",
+          description: "There is no denying that this Alpha Chi is just fucking ugly. None of the angles make any sense. Why is the roof bent like that?? It looks like a hobbit barn. And Jesus Christ why is it green??? This is probably the ugliest house on campus. But honestly? At least they tried. At least whichever blind carpenter built this house had the courage to fucking dream.",
           image: Images[0],
         },
         {
@@ -70,8 +72,8 @@ export default class screens extends Component {
       region: {
         latitude: 43.705131,
         longitude: -72.288719,
-        latitudeDelta: 0.0486400,
-        longitudeDelta: 0.0401400,
+        latitudeDelta: 0.0150000,
+        longitudeDelta: 0.0170000,
       },
     };
 
@@ -109,6 +111,10 @@ export default class screens extends Component {
         }
       }, 10);
     });
+  }
+
+  _onPress = () => {
+  	this.setState({pressStatus: !this.state.pressStatus});
   }
 
   render() {
@@ -179,15 +185,19 @@ export default class screens extends Component {
           contentContainerStyle={styles.endPadding}
         >
           {this.state.markers.map((marker, index) => (
-            <View style={styles.card} key={index}>
+            <View style={this.state.pressStatus ? styles.cardExpanded : styles.card} key={index}>
+            <TouchableHighlight onPress={this._onPress} style={styles.cardImage}>
               <Image
                 source={marker.image}
                 style={styles.cardImage}
                 resizeMode="cover"
               />
+              </TouchableHighlight>
               <View style={styles.textContent}>
                 <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>
+                <Text numberOfLines={
+                	this.state.pressStatus ? 10 : 2
+                } style={styles.cardDescription}>
                   {marker.description}
                 </Text>
               </View>
@@ -225,7 +235,20 @@ const styles = StyleSheet.create({
     shadowOffset: { x: 2, y: -2 },
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
-    overflow: "hidden",
+    // overflow: "hidden",
+  },
+  cardExpanded: {
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#FFF",
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    height: CARD_HEIGHT*2,
+    width: CARD_WIDTH,
+    // overflow: "hidden",
   },
   cardImage: {
     flex: 3,
@@ -235,6 +258,7 @@ const styles = StyleSheet.create({
   },
   textContent: {
     flex: 1,
+    flexWrap: "wrap",
   },
   cardtitle: {
     fontSize: 12,
@@ -244,6 +268,7 @@ const styles = StyleSheet.create({
   cardDescription: {
     fontSize: 12,
     color: "#444",
+    flexWrap: "wrap"
   },
   markerWrap: {
     alignItems: "center",
