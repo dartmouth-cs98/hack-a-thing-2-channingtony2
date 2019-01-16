@@ -24,7 +24,7 @@ const Images = [
 // defining constatns for height/width based on the window
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = height / 2.5;
-const CARD_WIDTH = CARD_HEIGHT +60;
+const CARD_WIDTH = width - 40;
 
 export default class screens extends Component {
 
@@ -64,8 +64,8 @@ export default class screens extends Component {
             latitude: 43.703068,
             longitude: -72.290745,
           },
-          title: "Foco",
-          description: "The hungriest place in all of Hanover",
+          title: "SAE",
+          description: "Oh SAE, I was trying to limit this list to frats recognized by the college, but I just couldn’t do it. You are too beautiful. If Phi Delt is my wild, pretentious college boyfriend whom I will always love, you are my inevitable boring white old-money husband. You and your tasteful brick and shuttered windows. You and your strip of tall columns that bear an oversized flag that I would resent in others, but on you reminds me of your family compound in Nantucket. I will wed you in a cathedral and hold our reception in your family country club. I will stay home at our house in Greenwich and raise our children, Moorhead and Monroe. I will offer demure smiles behind you on the podium for your bid for the Republican Nomination. I will never truly love you, but I will love what you can give me, and perhaps those two are not so different after all.",
           image: Images[3],
         },
       ],
@@ -189,14 +189,14 @@ export default class screens extends Component {
             <TouchableHighlight onPress={this._onPress} style={styles.cardImage}>
               <Image
                 source={marker.image}
-                style={styles.cardImage}
+                style={this.state.pressStatus ? styles.cardImageExpanded : styles.cardImage}
                 resizeMode="cover"
               />
               </TouchableHighlight>
-              <View style={styles.textContent}>
+              <View style={this.state.pressStatus ? styles.textContentExpaned : styles.textContent}>
                 <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
                 <Text numberOfLines={
-                	this.state.pressStatus ? 10 : 2
+                	this.state.pressStatus ? 16 : 2
                 } style={styles.cardDescription}>
                   {marker.description}
                 </Text>
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT*2,
+    height: CARD_HEIGHT*2.2,
     width: CARD_WIDTH,
     // overflow: "hidden",
   },
@@ -256,8 +256,18 @@ const styles = StyleSheet.create({
     height: "100%",
     alignSelf: "center",
   },
+  cardImageExpanded: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
   textContent: {
     flex: 1,
+    flexWrap: "wrap",
+  },
+  textContentExpanded: {
+    flex: 3,
     flexWrap: "wrap",
   },
   cardtitle: {
