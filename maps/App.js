@@ -81,6 +81,36 @@ export default class screens extends Component {
     this.animation = new Animated.Value(0);
   }
 
+  componentDidMount() {
+    // We should detect when scrolling has stopped then animate
+    // We should just debounce the event listener here
+    this.animation.addListener(({ value }) => {
+      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      if (index >= this.state.markers.length) {
+        index = this.state.markers.length - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+
+      clearTimeout(this.regionTimeout);
+      this.regionTimeout = setTimeout(() => {
+        if (this.index !== index) {
+          this.index = index;
+          const { coordinate } = this.state.markers[index];
+          this.map.animateToRegion(
+            {
+              ...coordinate,
+              latitudeDelta: this.state.region.latitudeDelta,
+              longitudeDelta: this.state.region.longitudeDelta,
+            },
+            350
+          );
+        }
+      }, 10);
+    });
+  }
+
   
 
   render() {
@@ -109,6 +139,26 @@ export default class screens extends Component {
           initialRegion={this.state.region}
           style={styles.container}
         >
+        {this.state.markers.map((marker, index) => {
+  const scaleStyle = {
+    transform: [
+      {
+        scale: interpolations[index].scale,
+      },
+    ],
+  };
+  const opacityStyle = {
+    opacity: interpolations[index].opacity,
+  };
+  return (
+    <MapView.Marker key={index} coordinate={marker.coordinate}>
+      <Animated.View style={[styles.markerWrap, opacityStyle]}>
+        <Animated.View style={[styles.ring, scaleStyle]} />
+        <View style={styles.marker} />
+      </Animated.View>
+    </MapView.Marker>
+  );
+})}
           {this.state.markers.map((marker, index) => {
             return (
               <MapView.Marker key={index} coordinate={marker.coordinate}>
