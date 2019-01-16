@@ -157,16 +157,6 @@ export default class screens extends Component {
             </MapView.Marker>
           );
         })}
-          {this.state.markers.map((marker, index) => {
-            return (
-              <MapView.Marker key={index} coordinate={marker.coordinate}>
-                <Animated.View style={[styles.markerWrap]}>
-                  <Animated.View style={[styles.ring]} />
-                  <View style={styles.marker} />
-                </Animated.View>
-              </MapView.Marker>
-            );
-          })}
         </MapView>
         <Animated.ScrollView
           horizontal
