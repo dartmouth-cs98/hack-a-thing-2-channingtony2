@@ -70,8 +70,8 @@ export default class screens extends Component {
       region: {
         latitude: 43.705131,
         longitude: -72.288719,
-        latitudeDelta: 0.04864195044303443,
-        longitudeDelta: 0.040142817690068,
+        latitudeDelta: 0.0486400,
+        longitudeDelta: 0.0401400,
       },
     };
 
